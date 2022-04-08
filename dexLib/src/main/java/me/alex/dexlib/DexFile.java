@@ -1,4 +1,4 @@
-package me.alex.dexclassloaderdemo;
+package me.alex.dexlib;
 
 /**
  * ================================================

@@ -21,30 +21,32 @@ import dalvik.system.DexClassLoader;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String dexName = "out1.dex";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //将assets下的文件放到data/data/包名/cache/目录下 模拟从服务器加载dex文件
-        putAssetsToSDCard("out.dex");
+        putAssetsToSDCard(dexName);
         //点击按钮显示dex文件中的内容
         findViewById(R.id.main_btn).setOnClickListener(v -> {
-            loadDex();
+            loadDex("me.alex.dexlib.DexFile", "getData");
         });
     }
 
     /**
      * 加载dex
      */
-    public void loadDex() {
+    public void loadDex(String classPath, String methodName) {
         DexClassLoader loader = new DexClassLoader(
-                getCacheDir().getAbsolutePath() + File.separator + "out.dex"
-                , getCacheDir().getAbsolutePath() + File.separator + "out.dex"
+                getCacheDir().getAbsolutePath() + File.separator + dexName
+                , getCacheDir().getAbsolutePath() + File.separator + dexName
                 , null, getClassLoader()
         );
         try {
-            Class clz = loader.loadClass("me.alex.dexclassloaderdemo.DexFile");
-            Method dexRes = clz.getDeclaredMethod("getData");
+            Class<?> clz = loader.loadClass(classPath);
+            Method dexRes = clz.getDeclaredMethod(methodName);
             Toast.makeText(this, (String) dexRes.invoke(clz.newInstance()), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             OutputStream myOutput = null;
             myOutput = new FileOutputStream(getCacheDir() + File.separator + strOutFileName);
 
-            myInput = this.getAssets().open("out.dex");
+            myInput = this.getAssets().open(dexName);
             byte[] buffer = new byte[1024];
             int length = myInput.read(buffer);
             while (length > 0) {
