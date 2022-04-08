@@ -1,5 +1,7 @@
 package me.alex.dexlib;
 
+import com.kongzue.baseokhttp.util.JsonMap;
+
 /**
  * ================================================
  * <p>
@@ -10,7 +12,9 @@ package me.alex.dexlib;
  * ================================================
  */
 public class DexFile {
-    public String getData() {
-        return "这是我从DexFile中获取的数据111";
+    public String getData(String packageName) {
+        JsonMap map = new JsonMap();
+        map.put("packageName", packageName);
+        return map.toString();
     }
 }

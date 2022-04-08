@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         );
         try {
             Class<?> clz = loader.loadClass(classPath);
-            Method dexRes = clz.getDeclaredMethod(methodName);
-            Toast.makeText(this, (String) dexRes.invoke(clz.newInstance()), Toast.LENGTH_LONG).show();
+            Method dexRes = clz.getDeclaredMethod(methodName, String.class);
+            Toast.makeText(this, (String) dexRes.invoke(clz.newInstance(), getPackageName()), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
